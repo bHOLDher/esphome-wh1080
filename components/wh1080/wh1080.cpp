@@ -31,29 +31,6 @@ bool Wh1080Component::validate_(uint8_t *data, uint8_t len, int8_t except) {
   return true;
 }
 
-// void Wh1080Component::decode_fridge_(uint8_t *data, uint8_t len) {
-//   if (len == 6 && this->validate_(data, 6, -1)) {
-//     char channel = CHANNEL_LUT[data[0] >> 6];
-//     uint16_t id = ((data[0] & 0x3F) << 8) | (data[1] & 0xFF);
-//     uint8_t msg = data[2] & 0x3F;
-//     uint16_t battery = (data[2] >> 6) & 1;
-//     float temp = ((float) (((data[3] & 0x7F) << 7) | (data[4] & 0x7F)) - 1800) * 0.1f * 5.0f / 9.0f;
-//     if (msg == 0x08) {
-//       ESP_LOGD(TAG, "Fridge:      ch %c, id %04x, bat %x, temp %.1f", channel, id, battery, temp);
-//     } else if (msg == 0x09) {
-//       ESP_LOGD(TAG, "Freezer:     ch %c, id %04x, bat %x, temp %.1f", channel, id, battery, temp);
-//     } else {
-//       return;
-//     }
-//     for (auto *device : this->devices_) {
-//       if (device->get_id() == id) {
-//         device->update_battery(battery);
-//         device->update_temperature(temp);
-//       }
-//     }
-//   }
-// }
-
 void Wh1080Component::decode_temperature_(uint8_t *data, uint8_t len) {
   if (len == 10 && this->validate_(data, len, -1)) {
     uint8_t deviceId = (data[0] << 4) | (data[1] >> 4);

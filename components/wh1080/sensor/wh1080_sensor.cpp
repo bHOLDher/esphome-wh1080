@@ -52,26 +52,6 @@ void Wh1080Sensor::update_humidity(float value) {
   }
 }
 
-void Wh1080Sensor::update_distance(float value) {
-  if (this->distance_sensor_) {
-    // filter out crc false positives by confirming any large changes in value
-    if (fabsf(value - this->distance_last_) < 1.0) {
-      this->distance_sensor_->publish_state(value);
-    }
-    this->distance_last_ = value;
-  }
-}
-
-void Wh1080Sensor::update_lightning(uint32_t count) {
-  if (this->lightning_sensor_) {
-    // filter out crc false positives by confirming any change in value
-    if (count == this->lightning_last_) {
-      this->lightning_sensor_->publish_state(count);
-    }
-    this->lightning_last_ = count;
-  }
-}
-
 void Wh1080Sensor::update_rainfall(float value) {
   if (this->rainfall_sensor_) {
     // filter out crc false positives by confirming any change in value

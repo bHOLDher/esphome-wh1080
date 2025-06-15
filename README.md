@@ -16,87 +16,93 @@ To get it up and running:
 
 Example yaml config:
 
-    external_components:
-    - source: github://bHOLDher/esphome-wh1080
-        refresh: 0s
-        components: [ wh1080 ]
+```
+external_components:
+  - source: github://bHOLDher/esphome-wh1080
+    refresh: 0s
+    components: [ wh1080 ]
 
-    logger:
-    #level: VERBOSE
+logger:
+  #level: VERBOSE
 
-    wh1080:
+wh1080:
 
-    remote_receiver:
-    pin: 
-        number: 16
-    tolerance: 25%
-    filter: 250us
-    idle: 2000us
-    buffer_size: 1kb
-    dump: 
-        - rc_switch
-    
-    binary_sensor:
-    - platform: wh1080
-        devices:
-        - device: 0x00f6
-            battery_level:
-            name: "WH1080 Battery"
+remote_receiver:
+  pin: 
+    number: 16
+  tolerance: 25%
+  filter: 250us
+  idle: 2000us
+  buffer_size: 1kb
+  dump: 
+    - rc_switch
 
-    sensor:
-    - platform: wh1080
-        devices:
-        - device: 0x00f6
-            temperature:
-            name: "WH1080 Temperature"
-            humidity:
-            name: "WH1080 Humidity"
-            rain:
-            name: "WH1080 Rain"
-            speed:
-            name: "WH1080 Wind Speed"
-            gust_speed:
-            name: "WH1080 Wind Gust Speed"
-            direction:
-            name: "WH1080 Wind Direction"
-    
+binary_sensor:
+  - platform: wh1080
+    devices:
+    - device: 0x00f6
+      battery_level:
+      name: "WH1080 Battery"
+
+sensor:
+  - platform: wh1080
+    devices:
+    - device: 0x00f6
+        temperature:
+        name: "WH1080 Temperature"
+        humidity:
+        name: "WH1080 Humidity"
+        rain:
+        name: "WH1080 Rain"
+        speed:
+        name: "WH1080 Wind Speed"
+        gust_speed:
+        name: "WH1080 Wind Gust Speed"
+        direction:
+        name: "WH1080 Wind Direction"
+```
+
 I also added the other sensors with the following yaml config:
 
-    i2c:
-    sda: 8
-    scl: 9
-    scan: true
-    id: bus_a
-    
-    one_wire:
-    - platform: gpio
-        pin:
-        number: 17
+```
+i2c:
+  sda: 8
+  scl: 9
+  scan: true
+  id: bus_a
 
-    - platform: dallas_temp
-        # Address list can be seen in log, given log level >= debug (default)
-        name: "Inside Temperature"
-        id: inside_temp
-        address: 0x783c3af649652528
+one_wire:
+  - platform: gpio
+    pin:
+    number: 17
 
-    - platform: bmp280_i2c
-        temperature:
-        name: "BMP180 Temperature"
-        oversampling: 4x
-        id: bmp280_temperature
-        pressure:
-        name: "BMP180 Pressure"
-        oversampling: 4x
-        id: bmp280_pressure
+sensor:
+  - platform: dallas_temp
+    # Address list can be seen in log, given log level >= debug (default)
+    name: "Inside Temperature"
+    id: inside_temp
+    address: 0x783c3af649652528
 
-    - platform: template
-        name: "Equivalent sea level pressure"
-        lambda: |-
-        const float STANDARD_ALTITUDE = 1650; // in meters
-        return id(bmp280_pressure).state / powf(1 - ((0.0065 * STANDARD_ALTITUDE) /
-            (id(bmp280_temperature).state + (0.0065 * STANDARD_ALTITUDE) + 273.15)), 5.257); // in hPa
-        unit_of_measurement: 'hPa'
-        update_interval: 60s
+  - platform: bmp280_i2c
+    temperature:
+    name: "BMP180 Temperature"
+    oversampling: 4x
+    id: bmp280_temperature
+    pressure:
+    name: "BMP180 Pressure"
+    oversampling: 4x
+    id: bmp280_pressure
+
+  - platform: template
+    name: "Equivalent sea level pressure"
+    lambda: |-
+    const float STANDARD_ALTITUDE = 1650; // in meters
+    return id(bmp280_pressure).state / powf(1 - ((0.0065 * STANDARD_ALTITUDE) /
+      (id(bmp280_temperature).state + (0.0065 * STANDARD_ALTITUDE) + 273.15)), 5.257); // in hPa
+    unit_of_measurement: 'hPa'
+    update_interval: 60s
+```
+
 
 
 # Circuit Diagram
