@@ -96,9 +96,9 @@ sensor:
   - platform: template
     name: "Equivalent sea level pressure"
     lambda: |-
-    const float STANDARD_ALTITUDE = 1650; // in meters
-    return id(bmp280_pressure).state / powf(1 - ((0.0065 * STANDARD_ALTITUDE) /
-      (id(bmp280_temperature).state + (0.0065 * STANDARD_ALTITUDE) + 273.15)), 5.257); // in hPa
+      const float STANDARD_ALTITUDE = 1650; // in meters
+      return id(bmp280_pressure).state / powf(1 - ((0.0065 * STANDARD_ALTITUDE) /
+        (id(bmp280_temperature).state + (0.0065 * STANDARD_ALTITUDE) + 273.15)), 5.257); // in hPa
     unit_of_measurement: 'hPa'
     update_interval: 60s
 ```
