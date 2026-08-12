@@ -38,7 +38,7 @@ void Wh1080Component::decode_temperature_(uint8_t *data, uint8_t len) {
     float humidity = (float)data[3];
     float windAvg = (float)data[4] * 0.34;
     float windGust = (float)data[5] * 0.34;
-    float rain = (float)((int32_t)data[6] << 8 | (int32_t)data[7]) * 0.2794;
+    float rain = (float)((int32_t)data[6] << 8 | (int32_t)data[7]) * 0.3725;
     uint8_t batteryFlag = (data[8] >> 4) == 0 ? 100 : 0;
     float windDirection = (float)(data[8] & 0x0F) * 22.5;
 
