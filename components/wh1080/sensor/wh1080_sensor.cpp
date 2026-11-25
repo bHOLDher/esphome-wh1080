@@ -54,10 +54,8 @@ void Wh1080Sensor::update_humidity(float value) {
 
 void Wh1080Sensor::update_rainfall(float value) {
   if (this->rainfall_sensor_) {
-    // filter out crc false positives by confirming any change in value
-    // Rain total is a running counter: publish whenever it changes.
-    // Frames that failed CRC are already dropped by the decoder.
-    if (value != this->rainfall_last_) {
+    // filter out crc false positives by ignoring sudden large changes
+    if (fabsf(value - this->rainfall_last_) < 10.0) {
       this->rainfall_sensor_->publish_state(value);
     }
     this->rainfall_last_ = value;
